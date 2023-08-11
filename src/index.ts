@@ -11,19 +11,19 @@ function App() {
 }
 
 function perform() {
-  let tableSystem: string[][] = tableController.converterStringForTable({
-    value: TABLES_TEST.system,
-    ...settings.converterStringTable,
-  });
-  let tableMarket: string[][] = tableController.converterStringForTable({
-    value: TABLES_TEST.market,
-    ...settings.converterStringTable,
-  });
+  // let tableSystem: string[][] = tableController.converterStringForTable({
+  //   value: TABLES_TEST.system,
+  //   ...settings.converterStringTable,
+  // });
+  // let tableMarket: string[][] = tableController.converterStringForTable({
+  //   value: TABLES_TEST.market,
+  //   ...settings.converterStringTable,
+  // });
 
-  return performOperation(tableSystem, tableMarket);
+  // return performOperation(tableSystem, tableMarket);
 
-  // let tableSystem: string[][];
-  // let tableMarket: string[][];
+  let tableSystem: string[][];
+  let tableMarket: string[][];
 
   const validExec = { system: false, market: false };
 
@@ -102,18 +102,32 @@ function performOperation(tableSystem: string[][], tableMarket: string[][]) {
       tableSystem[i][getParamsHeaderSystem().cepFinal]
     );
 
+    let indexI = -1;
+    let indexJ = -1;
+    tableMarket.map((faixa, j) => {
+      const cepInitialMarket = Number(
+        faixa[getParamsHeaderMarket().cepInitial]
+      );
+      const cepFinalMarket = Number(faixa[getParamsHeaderMarket().cepFinal]);
+
+      if (
+        cepInitialMarket <= cepInitialSystem &&
+        cepInitialSystem <= cepFinalMarket
+      ) {
+        indexI = j;
+      }
+      if (
+        cepInitialMarket <= cepFinalSystem &&
+        cepFinalSystem <= cepFinalMarket
+      ) {
+        indexJ = j;
+      }
+
+      return faixa;
+    });
     let faixas: number[] = [];
 
-    for (let j = tableMarket.length - 1; j > 0; j--) {
-      const cepInitialMarket = Number(
-        tableMarket[j][getParamsHeaderMarket().cepInitial]
-      );
-      const cepFinalMarket = Number(
-        tableMarket[j][getParamsHeaderMarket().cepFinal]
-      );
-
-        console.log([cepInitialSystem, cepFinalSystem], [cepInitialMarket, cepFinalMarket])
-    }
+    for (let k = indexI; k <= indexJ; k++) faixas.push(k);
 
     tableTotal.push([]);
     tableTotal[i][0] = `${cepInitialSystem}`;
@@ -122,7 +136,7 @@ function performOperation(tableSystem: string[][], tableMarket: string[][]) {
   }
 
   console.log(tableTotal);
-  // performDownload(tableTotal);
+  performDownload(tableTotal);
 }
 
 function performDownload(table: string[][]) {
