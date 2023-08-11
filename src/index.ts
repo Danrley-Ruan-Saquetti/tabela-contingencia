@@ -127,7 +127,14 @@ function performOperation(tableSystem: string[][], tableMarket: string[][]) {
     });
     let faixas: number[] = [];
 
-    for (let k = indexI; k <= indexJ; k++) faixas.push(k);
+    if (indexI >= 0 || indexJ >= 0) {
+      for (
+        let k = indexI >= 0 ? indexI : indexJ;
+        k <= (indexJ >= 0 ? indexJ : indexI);
+        k++
+      )
+        faixas.push(k);
+    }
 
     tableTotal.push([]);
     tableTotal[i][0] = `${cepInitialSystem}`;
