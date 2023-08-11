@@ -11,18 +11,10 @@ function App() {
 }
 
 function perform() {
-  let tableSystem: string[][] = tableController.converterStringForTable({
-      value: TABLES_TEST.system,
-      ...settings.converterStringTable,
-    });
-  let tableMarket: string[][] = tableController.converterStringForTable({
-      value: TABLES_TEST.market,
-      ...settings.converterStringTable,
-    });
+  let tableSystem: string[][]
+  let tableMarket: string[][]
 
   const validExec = { system: false, market: false };
-
-  return performOperation(tableSystem, tableMarket);
 
   function exeOperation() {
     if (!validExec.market || !validExec.system) {
