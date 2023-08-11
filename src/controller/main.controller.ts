@@ -42,6 +42,7 @@ function MainControl() {
             const linkDownloadElement = document.createElement('a')
 
             linkDownloadElement.setAttribute("href", url)
+            linkDownloadElement.innerHTML = "Download"
             linkDownloadElement.setAttribute("download", `Fazenda - ${name ? `${name} ` : ``}${zipName}`)
 
             document.body.appendChild(linkDownloadElement)
