@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tooltip</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/colresizable/1.6.0/colResizable-1.6.min.js" integrity="sha512-pMZ2rgWRGMywzbRAVwGk+auTREN0ldKKjACUSB4cneTgD3kn/6pu//Lxi4l8xSRkY83HENr1vztTnGDySWs0Mg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
 </head>
 
 <body>
-    <input type="file" name="table-contingency"></input>
+    <input type="file" name="table-contingency-system">System</input>
+    <input type="file" name="table-contingency-market">Market</input>
 
     <button type="button" name="confirm">Send</button>
 
     <script src="dist/util/index.js"></script>
+    <script src="dist/test.js"></script>
     <script src="dist/controller/file.controller.js"></script>
     <script src="dist/controller/table.controller.js"></script>
+    <script src="dist/controller/main.controller.js"></script>
     <script src="dist/index.js"></script>
 </body>
 
