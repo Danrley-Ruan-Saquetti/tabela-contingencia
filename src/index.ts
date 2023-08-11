@@ -2,7 +2,7 @@ console.clear();
 
 const fileController = FileControl();
 const tableController = TableControl();
-const mainController = MainControl()
+const mainController = MainControl();
 
 function App() {
   document
@@ -11,8 +11,19 @@ function App() {
 }
 
 function perform() {
-  let tableSystem: string[][]
-  let tableMarket: string[][]
+  let tableSystem: string[][] = tableController.converterStringForTable({
+    value: TABLES_TEST.system,
+    ...settings.converterStringTable,
+  });
+  let tableMarket: string[][] = tableController.converterStringForTable({
+    value: TABLES_TEST.market,
+    ...settings.converterStringTable,
+  });
+
+  return performOperation(tableSystem, tableMarket);
+
+  // let tableSystem: string[][];
+  // let tableMarket: string[][];
 
   const validExec = { system: false, market: false };
 
@@ -91,9 +102,9 @@ function performOperation(tableSystem: string[][], tableMarket: string[][]) {
       tableSystem[i][getParamsHeaderSystem().cepFinal]
     );
 
-    let faixa: number[] = [];
+    let faixas: number[] = [];
 
-    for (let j = 1; j < tableMarket.length; j++) {
+    for (let j = tableMarket.length - 1; j > 0; j--) {
       const cepInitialMarket = Number(
         tableMarket[j][getParamsHeaderMarket().cepInitial]
       );
@@ -101,33 +112,27 @@ function performOperation(tableSystem: string[][], tableMarket: string[][]) {
         tableMarket[j][getParamsHeaderMarket().cepFinal]
       );
 
-      if (cepInitialSystem < cepInitialMarket) {
-          continue;
-        }
-    if (cepFinalSystem > cepFinalMarket) {
-        if (cepInitialSystem >= cepFinalMarket) {continue}
-        j = tableMarket.length;
-        continue;
-        }
-
-      faixa.push(j);
+        console.log([cepInitialSystem, cepFinalSystem], [cepInitialMarket, cepFinalMarket])
     }
 
     tableTotal.push([]);
     tableTotal[i][0] = `${cepInitialSystem}`;
     tableTotal[i][1] = `${cepFinalSystem}`;
-    tableTotal[i][2] = faixa.map((faixa) => `Faixa ${faixa}`).join(",");
+    tableTotal[i][2] = faixas.map((faixa) => `Faixa ${faixa}`).join(",");
   }
 
-  performDownload(tableTotal);
+  console.log(tableTotal);
+  // performDownload(tableTotal);
 }
 
 function performDownload(table: string[][]) {
-    const tableInString = fileController.getContentInFormatCSV(table)
+  const tableInString = fileController.getContentInFormatCSV(table);
 
-   const file = fileController.createFile({content: [tableInString]})
+  const file = fileController.createFile({ content: [tableInString] });
 
-   mainController.prepareForDownload("", [{file, name: 'Tabela de Contingência'}])
+  mainController.prepareForDownload("", [
+    { file, name: "Tabela de Contingência" },
+  ]);
 }
 
 window.onload = App;
