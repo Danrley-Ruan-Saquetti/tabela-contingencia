@@ -1,15 +1,3 @@
-declare const settings: {
-    converterStringTable: {
-        separatorLine: RegExp;
-        separatorColumn: string;
-        configSeparatorColumn: {
-            separator: string;
-            searchValue: string;
-            replaceValue: string;
-            betweenText: string;
-        };
-    };
-};
 declare function FileControl(): {
     getContentFile: (file: Blob, onload: (result: string) => void, onerror?: () => void) => {
         error: {

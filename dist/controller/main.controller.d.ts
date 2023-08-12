@@ -3,4 +3,5 @@ declare function MainControl(): {
         file: any;
         name: string;
     }[]) => void;
+    performProcessContingency: (tableSystem: Table, tableMarket: Table) => void;
 };

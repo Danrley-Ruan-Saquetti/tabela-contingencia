@@ -90,28 +90,10 @@ declare const mainController: {
         file: any;
         name: string;
     }[]) => void;
+    performProcessContingency: (tableSystem: Table, tableMarket: Table) => void;
 };
 declare function App(): void;
 declare function perform(): void;
 declare function getTableOfInput(selectorInput: string, callback: (table: string[][]) => void): void;
-declare const PARAMS_HEADER_SYSTEM: {
-    cepInitial: number;
-    cepFinal: number;
-};
-declare const PARAMS_HEADER_MARKET: {
-    ml: {
-        cepInitial: number;
-        cepFinal: number;
-    };
-};
-declare const MARKET = "ml";
-declare function getParamsHeaderMarket(): {
-    cepInitial: number;
-    cepFinal: number;
-};
-declare function getParamsHeaderSystem(): {
-    cepInitial: number;
-    cepFinal: number;
-};
 declare function performOperation(tableSystem: string[][], tableMarket: string[][]): void;
 declare function performDownload(table: string[][]): void;

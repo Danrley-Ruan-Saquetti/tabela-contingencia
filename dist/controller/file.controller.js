@@ -1,16 +1,4 @@
 "use strict";
-const settings = {
-    converterStringTable: {
-        separatorLine: /\r?\n/,
-        separatorColumn: ";",
-        configSeparatorColumn: {
-            separator: ",",
-            searchValue: ",",
-            replaceValue: "?",
-            betweenText: '"',
-        },
-    },
-};
 function FileControl() {
     const getContentFile = (file, onload, onerror) => {
         if (!file) {

@@ -1,6 +1,11 @@
 "use strict";
 function MainControl() {
     const fileControl = FileControl();
+    const performProcessContingency = (tableSystem, tableMarket) => {
+        const processController = new ProcessController(tableSystem, tableMarket);
+        const result = processController.perform();
+        return result;
+    };
     const exportFiles = ({ files, callback }) => {
         const filesZip = [];
         for (let i = 0; i < files.length; i++) {
@@ -33,5 +38,5 @@ function MainControl() {
             document.body.appendChild(linkDownloadElement);
         }, files);
     };
-    return { prepareForDownload };
+    return { prepareForDownload, performProcessContingency };
 }

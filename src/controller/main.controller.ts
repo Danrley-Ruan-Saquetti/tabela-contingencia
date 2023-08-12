@@ -1,6 +1,14 @@
 function MainControl() {
     const fileControl = FileControl()
 
+    const performProcessContingency = (tableSystem: Table, tableMarket: Table) => {
+        const processController = new ProcessController(tableSystem, tableMarket)
+
+        const result = processController.perform()
+
+        return result
+    }
+
     const exportFiles = ({ files, callback }: { files: { file: any, name: string }[], callback: (url: string) => void }) => {
         const filesZip: { file: Blob, name: string }[] = []
 
@@ -49,5 +57,5 @@ function MainControl() {
         }, files)
     }
 
-    return {prepareForDownload}
+    return { prepareForDownload, performProcessContingency }
 }
