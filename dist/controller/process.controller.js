@@ -13,10 +13,12 @@ class ProcessController {
         this.insertWeightInitialInTableMarket();
         this.groupTableMarketByCep();
         this.groupTableSystemByCep();
-        this.insertRangeCepInTotalSystem();
+        this.createTableTotalSystem();
+        this.createTableTotalMarket();
         console.log(this);
+        return { tableTotalMarket: this.tableTotalMarket, tableTotalSystem: this.tableTotalSystem };
     }
-    insertRangeCepInTotalSystem() {
+    createTableTotalSystem() {
         const cepOfGroupTableMarket = this.getCepOfGroupTableMarket();
         const cepOfGroupTableSystem = this.getCepOfGroupTableSystem();
         let indexLine = 1;
@@ -64,6 +66,35 @@ class ProcessController {
                 indexLine++;
             });
         });
+    }
+    createTableTotalMarket() {
+        const cepOfGroupTableMarket = this.getCepOfGroupTableMarket();
+        const cepOfGroupTableSystem = this.getCepOfGroupTableSystem();
+        let indexLine = 1;
+        for (let i = 1; i < cepOfGroupTableMarket.length; i++) {
+            const [cepInitialMarket, cepFinalMarket] = cepOfGroupTableMarket[i];
+            const rangeCepTotalSystem = this.tableTotalSystem.filter(line => line[getParamsHeaderTotalSystem().rangeCep].split(',').find(range => range == `Faixa ${i}`));
+            if (!rangeCepTotalSystem.length) {
+                continue;
+            }
+            const rangeCepTotalSystemOrderedByFreight = TableControl().orderTable({ table: rangeCepTotalSystem, column: getParamsHeaderTotalSystem().freight });
+            const rangeCepTotalSystemOrderedByDeadline = TableControl().orderTable({ table: rangeCepTotalSystem, column: getParamsHeaderTotalSystem().deadline });
+            const biggestFreight = rangeCepTotalSystemOrderedByFreight[rangeCepTotalSystemOrderedByFreight.length - 1];
+            const biggestDeadline = rangeCepTotalSystemOrderedByDeadline[rangeCepTotalSystemOrderedByDeadline.length - 1];
+            const rangeCepGroupMarket = this.getGroupMarketByRangeCep(cepInitialMarket + "-" + cepFinalMarket);
+            rangeCepGroupMarket.forEach(({ weightFinal, weightInitial }) => {
+                if (typeof this.tableTotalMarket[indexLine] == "undefined") {
+                    this.tableTotalMarket.push([]);
+                }
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().cepInitial] = `${cepInitialMarket}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().cepFinal] = `${cepFinalMarket}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightFinal] = `${weightFinal}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightInitial] = `${weightInitial}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().biggestFreight] = `${biggestFreight[getParamsHeaderTotalSystem().freight]}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().biggestDeadline] = `${biggestDeadline[getParamsHeaderTotalSystem().deadline]}`;
+                indexLine++;
+            });
+        }
     }
     insertWeightInitialInTableSystem() {
         this.tableSystem.forEach((line, i) => {

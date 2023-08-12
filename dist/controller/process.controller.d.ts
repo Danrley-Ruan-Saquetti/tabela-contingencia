@@ -19,8 +19,12 @@ declare class ProcessController {
         }[];
     };
     constructor(tableSystem: Table, tableMarket: Table);
-    perform(): void;
-    private insertRangeCepInTotalSystem;
+    perform(): {
+        tableTotalMarket: Table;
+        tableTotalSystem: Table;
+    };
+    private createTableTotalSystem;
+    private createTableTotalMarket;
     private insertWeightInitialInTableSystem;
     private insertWeightInitialInTableMarket;
     private groupTableMarketByCep;

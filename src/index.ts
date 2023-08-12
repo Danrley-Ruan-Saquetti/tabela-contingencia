@@ -71,15 +71,18 @@ function getTableOfInput(
 
 function performOperation(tableSystem: string[][], tableMarket: string[][]) {
     const result = mainController.performProcessContingency(tableSystem, tableMarket)
+
+    performDownload({ tables: [result.tableTotalMarket, result.tableTotalSystem] })
 }
 
-function performDownload(table: string[][]) {
-    const tableInString = fileController.getContentInFormatCSV(table);
+function performDownload({ tables }: { tables: string[][][] }) {
+    const tableInString = tables.map(table => fileController.getContentInFormatCSV(table))
 
-    const file = fileController.createFile({ content: [tableInString] });
+    const files = tableInString.map(table => fileController.createFile({ content: [table] }));
 
     mainController.prepareForDownload("", [
-        { file, name: "Tabela de Contingência" },
+        { file: files[0], name: "Tabela Total de Contingência do Marketing" },
+        { file: files[1], name: "Tabela Total de Contingência do Sistema" },
     ]);
 }
 

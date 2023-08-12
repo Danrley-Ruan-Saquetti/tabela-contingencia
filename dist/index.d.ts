@@ -90,10 +90,15 @@ declare const mainController: {
         file: any;
         name: string;
     }[]) => void;
-    performProcessContingency: (tableSystem: Table, tableMarket: Table) => void;
+    performProcessContingency: (tableSystem: Table, tableMarket: Table) => {
+        tableTotalMarket: Table;
+        tableTotalSystem: Table;
+    };
 };
 declare function App(): void;
 declare function perform(): void;
 declare function getTableOfInput(selectorInput: string, callback: (table: string[][]) => void): void;
 declare function performOperation(tableSystem: string[][], tableMarket: string[][]): void;
-declare function performDownload(table: string[][]): void;
+declare function performDownload({ tables }: {
+    tables: string[][][];
+}): void;

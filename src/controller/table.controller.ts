@@ -192,15 +192,9 @@ function TableControl() {
     }
 
     const orderTable = ({ column, table }: { table: TTable, column: number }) => {
-        const headers = table[0]
-
-        const _table = table.splice(1, table.length)
-
-        const _tableOrdered = _table.sort(function (a, b) {
+        const _tableOrdered = [...table].sort(function (a, b) {
             return Number(a[column]) - Number(b[column]);
         })
-
-        _tableOrdered.unshift(headers)
 
         return _tableOrdered
     }

@@ -43,12 +43,14 @@ function getTableOfInput(selectorInput, callback) {
 }
 function performOperation(tableSystem, tableMarket) {
     const result = mainController.performProcessContingency(tableSystem, tableMarket);
+    performDownload({ tables: [result.tableTotalMarket, result.tableTotalSystem] });
 }
-function performDownload(table) {
-    const tableInString = fileController.getContentInFormatCSV(table);
-    const file = fileController.createFile({ content: [tableInString] });
+function performDownload({ tables }) {
+    const tableInString = tables.map(table => fileController.getContentInFormatCSV(table));
+    const files = tableInString.map(table => fileController.createFile({ content: [table] }));
     mainController.prepareForDownload("", [
-        { file, name: "Tabela de Contingência" },
+        { file: files[0], name: "Tabela Total de Contingência do Marketing" },
+        { file: files[1], name: "Tabela Total de Contingência do Sistema" },
     ]);
 }
 window.onload = App;
