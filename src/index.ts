@@ -11,19 +11,19 @@ function App() {
 }
 
 function perform() {
-    let tableSystem: string[][] = tableController.converterStringForTable({
-        value: TABLES_TEST.system,
-        ...settings.converterStringTable,
-    });
-    let tableMarket: string[][] = tableController.converterStringForTable({
-        value: TABLES_TEST.market,
-        ...settings.converterStringTable,
-    });
+    // let tableSystem: string[][] = tableController.converterStringForTable({
+    //     value: TABLES_TEST.system,
+    //     ...settings.converterStringTable,
+    // });
+    // let tableMarket: string[][] = tableController.converterStringForTable({
+    //     value: TABLES_TEST.market,
+    //     ...settings.converterStringTable,
+    // });
 
-    return performOperation(tableSystem, tableMarket);
+    // return performOperation(tableSystem, tableMarket);
 
-    // let tableSystem: string[][];
-    // let tableMarket: string[][];
+    let tableSystem: string[][];
+    let tableMarket: string[][];
 
     const validExec = { system: false, market: false };
 

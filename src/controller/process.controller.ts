@@ -90,7 +90,7 @@ class ProcessController {
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightInitial] = `${weightInitialSystem}`
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightFinal] = `${weightFinalSystem}`
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeCep] = ranges.map(range => `Faixa ${range + 1}`).join(',')
-                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeWeight] = `Faixa ${indexFinal + 1}`
+                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeWeight] = indexFinal >= 0 ? `Faixa ${indexFinal + 1}` : ""
 
                 indexLine++
             })
@@ -99,7 +99,6 @@ class ProcessController {
 
     private createTableTotalMarket() {
         const cepOfGroupTableMarket = this.getCepOfGroupTableMarket()
-        const cepOfGroupTableSystem = this.getCepOfGroupTableSystem()
 
         let indexLine = 1
 
@@ -138,13 +137,20 @@ class ProcessController {
             if (i == 0) { return }
 
             const lastWeightFinal = i != 1 ? Number(this.tableSystem[i - 1][getParamsHeaderSystem().weightFinal]) : 0
+            const weightFinal = i != 1 ? Number(this.tableSystem[i][getParamsHeaderSystem().weightFinal]) : 0
 
             if (isNaN(lastWeightFinal)) {
                 console.log(`Weight ${lastWeightFinal} of range cep ${line[getParamsHeaderSystem().cepInitial]} - ${line[getParamsHeaderSystem().cepFinal]} is not a number`)
                 return
             }
 
-            line[getParamsHeaderSystem().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`
+            const isFirstWeightOfCep = lastWeightFinal > weightFinal
+
+            if (!isFirstWeightOfCep) {
+                line[getParamsHeaderSystem().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`
+            } else {
+                line[getParamsHeaderSystem().weightInitial] = `0`
+            }
         })
     }
 
@@ -153,13 +159,20 @@ class ProcessController {
             if (i == 0) { return }
 
             const lastWeightFinal = i != 1 ? Number(this.tableMarket[i - 1][getParamsHeaderMarket().weightFinal]) : 0
+            const weightFinal = i != 1 ? Number(this.tableMarket[i][getParamsHeaderMarket().weightFinal]) : 0
 
             if (isNaN(lastWeightFinal)) {
                 console.log(`Weight ${lastWeightFinal} of range cep ${line[getParamsHeaderMarket().cepInitial]} - ${line[getParamsHeaderMarket().cepFinal]} is not a number`)
                 return
             }
 
-            line[getParamsHeaderMarket().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`
+            const isFirstWeightOfCep = lastWeightFinal > weightFinal
+
+            if (!isFirstWeightOfCep) {
+                line[getParamsHeaderMarket().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`
+            } else {
+                line[getParamsHeaderMarket().weightInitial] = `0`
+            }
         })
     }
 
@@ -248,55 +261,3 @@ class ProcessController {
         })
     }
 }
-
-/*
-for (let i = 1; i < this.tableSystem.length; i++) {
-            const cepInitialSystem = Number(
-                this.tableSystem[i][getParamsHeaderSystem().cepInitial]
-            );
-            const cepFinalSystem = Number(
-                this.tableSystem[i][getParamsHeaderSystem().cepFinal]
-            );
-
-            let indexI = -1;
-            let indexJ = -1;
-            this.tableMarket.map((faixa, j) => {
-                const cepInitialMarket = Number(
-                    faixa[getParamsHeaderMarket().cepInitial]
-                );
-                const cepFinalMarket = Number(faixa[getParamsHeaderMarket().cepFinal]);
-
-                if (
-                    cepInitialMarket <= cepInitialSystem &&
-                    cepInitialSystem <= cepFinalMarket
-                ) {
-                    indexI = j;
-                }
-                if (
-                    cepInitialMarket <= cepFinalSystem &&
-                    cepFinalSystem <= cepFinalMarket
-                ) {
-                    indexJ = j;
-                }
-
-                return faixa;
-            });
-            let faixas: number[] = [];
-
-            if (indexI >= 0 || indexJ >= 0) {
-                for (
-                    let k = indexI >= 0 ? indexI : indexJ;
-                    k <= (indexJ >= 0 ? indexJ : indexI);
-                    k++
-                )
-                    faixas.push(k);
-            }
-
-            this.tableTotalSystem.push([]);
-            this.tableTotalSystem[i][0] = `${cepInitialSystem}`;
-            this.tableTotalSystem[i][1] = `${cepFinalSystem}`;
-            this.tableTotalSystem[i][2] = faixas.map((faixa) => `Faixa ${faixa}`).join(",");
-        }
-
-        console.log(this.tableTotalSystem);
-*/

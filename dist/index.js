@@ -9,9 +9,8 @@ function App() {
         .querySelector('[name="confirm"]')) === null || _a === void 0 ? void 0 : _a.addEventListener("click", perform);
 }
 function perform() {
-    let tableSystem = tableController.converterStringForTable(Object.assign({ value: TABLES_TEST.system }, settings.converterStringTable));
-    let tableMarket = tableController.converterStringForTable(Object.assign({ value: TABLES_TEST.market }, settings.converterStringTable));
-    return performOperation(tableSystem, tableMarket);
+    let tableSystem;
+    let tableMarket;
     const validExec = { system: false, market: false };
     function exeOperation() {
         if (!validExec.market || !validExec.system) {
