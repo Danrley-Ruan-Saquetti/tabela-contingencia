@@ -25,6 +25,7 @@ const PARAMS_HEADER_MARKET = {
         cepFinal: 1,
         weightInitial: 2,
         weightFinal: 3,
+        rate: 4,
     },
 };
 const PARAMS_HEADER_TOTAL_SYSTEM = {
@@ -35,7 +36,8 @@ const PARAMS_HEADER_TOTAL_SYSTEM = {
     freight: 4,
     deadline: 5,
     rangeCep: 6,
-    rangeWeight: 7
+    rangeWeight: 7,
+    rate: 8,
 };
 const PARAMS_HEADER_TOTAL_MARKET = {
     cepInitial: 0,
@@ -44,6 +46,7 @@ const PARAMS_HEADER_TOTAL_MARKET = {
     weightFinal: 3,
     biggestFreight: 4,
     biggestDeadline: 5,
+    rate: 6,
 };
 const MARKET = "ml";
 function getParamsHeaderMarket() {

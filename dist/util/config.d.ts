@@ -24,6 +24,7 @@ declare const PARAMS_HEADER_MARKET: {
         cepFinal: number;
         weightInitial: number;
         weightFinal: number;
+        rate: number;
     };
 };
 declare const PARAMS_HEADER_TOTAL_SYSTEM: {
@@ -35,6 +36,7 @@ declare const PARAMS_HEADER_TOTAL_SYSTEM: {
     deadline: number;
     rangeCep: number;
     rangeWeight: number;
+    rate: number;
 };
 declare const PARAMS_HEADER_TOTAL_MARKET: {
     cepInitial: number;
@@ -43,6 +45,7 @@ declare const PARAMS_HEADER_TOTAL_MARKET: {
     weightFinal: number;
     biggestFreight: number;
     biggestDeadline: number;
+    rate: number;
 };
 declare const MARKET = "ml";
 declare function getParamsHeaderMarket(): {
@@ -50,6 +53,7 @@ declare function getParamsHeaderMarket(): {
     cepFinal: number;
     weightInitial: number;
     weightFinal: number;
+    rate: number;
 };
 declare function getParamsHeaderSystem(): {
     weightInitial: number;
@@ -68,6 +72,7 @@ declare function getParamsHeaderTotalSystem(): {
     deadline: number;
     rangeCep: number;
     rangeWeight: number;
+    rate: number;
 };
 declare function getParamsHeaderTotalMarket(): {
     cepInitial: number;
@@ -76,4 +81,5 @@ declare function getParamsHeaderTotalMarket(): {
     weightFinal: number;
     biggestFreight: number;
     biggestDeadline: number;
+    rate: number;
 };

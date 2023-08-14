@@ -3,8 +3,28 @@ class ProcessController {
     constructor(tableSystem, tableMarket) {
         this.tableSystem = tableSystem;
         this.tableMarket = tableMarket;
-        this.tableTotalSystem = [["CEP INICIAL", "CEP FINAL", "PESO INICIAL", "PESO FINAL", "FRETE", "PRAZO", "FAIXA DO CEP", "FAIXA DO PESO"]];
-        this.tableTotalMarket = [["CEP INICIAL", "CEP FINAL", "PESO INICIAL", "PESO FINAL", "MAIOR FRETE", "MAIOR PRAZO"]];
+        this.tableTotalSystem = [
+            [
+                "CEP INICIAL",
+                "CEP FINAL",
+                "PESO INICIAL",
+                "PESO FINAL",
+                "FRETE",
+                "PRAZO",
+                "FAIXA DO CEP",
+                "FAIXA DO PESO",
+            ],
+        ];
+        this.tableTotalMarket = [
+            [
+                "CEP INICIAL",
+                "CEP FINAL",
+                "PESO INICIAL",
+                "PESO FINAL",
+                "MAIOR FRETE",
+                "MAIOR PRAZO",
+            ],
+        ];
         this.tableMarketGroupByCep = {};
         this.tableSystemGroupByCep = {};
     }
@@ -16,24 +36,35 @@ class ProcessController {
         this.createTableTotalSystem();
         this.createTableTotalMarket();
         console.log(this);
-        return { tableTotalMarket: this.tableTotalMarket, tableTotalSystem: this.tableTotalSystem };
+        return {
+            tableTotalMarket: this.tableTotalMarket,
+            tableTotalSystem: this.tableTotalSystem,
+        };
     }
     createTableTotalSystem() {
         const cepOfGroupTableMarket = this.getCepOfGroupTableMarket();
         const cepOfGroupTableSystem = this.getCepOfGroupTableSystem();
         let indexLine = 1;
         cepOfGroupTableSystem.forEach(([cepInitialSystem, cepFinalSystem], i) => {
-            const [cepInitialSystemInNumber, cepFinalSystemInNumber] = [Number(cepInitialSystem), Number(cepFinalSystem)];
+            const [cepInitialSystemInNumber, cepFinalSystemInNumber] = [
+                Number(cepInitialSystem),
+                Number(cepFinalSystem),
+            ];
             const groupRangeCepSystem = this.getGroupSystemByRangeCep(cepInitialSystemInNumber + "-" + cepFinalSystemInNumber);
             let indexInitial = -1;
             let indexFinal = -1;
             for (let j = 0; j < cepOfGroupTableMarket.length; j++) {
                 const [cepInitialMarket, cepFinalMarket] = cepOfGroupTableMarket[j];
-                const [cepInitialMarketInNumber, cepFinalMarketInNumber] = [Number(cepInitialMarket), Number(cepFinalMarket)];
-                if (cepInitialMarketInNumber <= cepInitialSystemInNumber && cepInitialSystemInNumber <= cepFinalMarketInNumber) {
+                const [cepInitialMarketInNumber, cepFinalMarketInNumber] = [
+                    Number(cepInitialMarket),
+                    Number(cepFinalMarket),
+                ];
+                if (cepInitialMarketInNumber <= cepInitialSystemInNumber &&
+                    cepInitialSystemInNumber <= cepFinalMarketInNumber) {
                     indexInitial = j;
                 }
-                if (cepInitialMarketInNumber <= cepFinalSystemInNumber && cepFinalSystemInNumber <= cepFinalMarketInNumber) {
+                if (cepInitialMarketInNumber <= cepFinalSystemInNumber &&
+                    cepFinalSystemInNumber <= cepFinalMarketInNumber) {
                     indexFinal = j;
                 }
             }
@@ -42,16 +73,22 @@ class ProcessController {
                 for (let k = indexInitial >= 0 ? indexInitial : indexFinal; k <= (indexFinal >= 0 ? indexFinal : indexInitial); k++)
                     ranges.push(k);
             }
-            const weightsMarket = ranges.map(range => this.getGroupMarketByIndex(range)).flat();
-            groupRangeCepSystem.forEach(({ deadline, freight, weightFinal: weightFinalSystem, weightInitial: weightInitialSystem }, k) => {
+            const weightsMarket = ranges
+                .map((range) => this.getGroupMarketByIndex(range))
+                .flat();
+            groupRangeCepSystem.forEach(({ deadline, freight, weightFinal: weightFinalSystem, weightInitial: weightInitialSystem, }, k) => {
                 if (typeof this.tableTotalSystem[indexLine] == "undefined") {
                     this.tableTotalSystem.push([]);
                 }
                 const weightFinalSystemInNumber = Number(weightFinalSystem);
                 let indexFinal = -1;
-                weightsMarket.forEach(({ weightFinal: weightFinalMarket, weightInitial: weightInitialMarket }, l) => {
-                    const [weightFinalMarketInNumber, weightInitialMarketInNumber] = [Number(weightFinalMarket), Number(weightInitialMarket)];
-                    if (weightInitialMarketInNumber <= weightFinalSystemInNumber && weightFinalSystemInNumber <= weightFinalMarketInNumber) {
+                weightsMarket.forEach(({ weightFinal: weightFinalMarket, weightInitial: weightInitialMarket, }, l) => {
+                    const [weightFinalMarketInNumber, weightInitialMarketInNumber] = [
+                        Number(weightFinalMarket),
+                        Number(weightInitialMarket),
+                    ];
+                    if (weightInitialMarketInNumber <= weightFinalSystemInNumber &&
+                        weightFinalSystemInNumber <= weightFinalMarketInNumber) {
                         indexFinal = l;
                     }
                 });
@@ -61,7 +98,7 @@ class ProcessController {
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().freight] = `${freight}`;
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightInitial] = `${weightInitialSystem}`;
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightFinal] = `${weightFinalSystem}`;
-                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeCep] = ranges.map(range => `Faixa ${range + 1}`).join(',');
+                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeCep] = ranges.map((range) => `Faixa ${range + 1}`).join(",");
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeWeight] = indexFinal >= 0 ? `Faixa ${indexFinal + 1}` : "";
                 indexLine++;
             });
@@ -72,12 +109,20 @@ class ProcessController {
         let indexLine = 1;
         for (let i = 1; i < cepOfGroupTableMarket.length; i++) {
             const [cepInitialMarket, cepFinalMarket] = cepOfGroupTableMarket[i];
-            const rangeCepTotalSystem = this.tableTotalSystem.filter(line => line[getParamsHeaderTotalSystem().rangeCep].split(',').find(range => range == `Faixa ${i}`));
+            const rangeCepTotalSystem = this.tableTotalSystem.filter((line) => line[getParamsHeaderTotalSystem().rangeCep]
+                .split(",")
+                .find((range) => range == `Faixa ${i}`));
             if (!rangeCepTotalSystem.length) {
                 continue;
             }
-            const rangeCepTotalSystemOrderedByFreight = TableControl().orderTable({ table: rangeCepTotalSystem, column: getParamsHeaderTotalSystem().freight });
-            const rangeCepTotalSystemOrderedByDeadline = TableControl().orderTable({ table: rangeCepTotalSystem, column: getParamsHeaderTotalSystem().deadline });
+            const rangeCepTotalSystemOrderedByFreight = TableControl().orderTable({
+                table: rangeCepTotalSystem,
+                column: getParamsHeaderTotalSystem().freight,
+            });
+            const rangeCepTotalSystemOrderedByDeadline = TableControl().orderTable({
+                table: rangeCepTotalSystem,
+                column: getParamsHeaderTotalSystem().deadline,
+            });
             const biggestFreight = rangeCepTotalSystemOrderedByFreight[rangeCepTotalSystemOrderedByFreight.length - 1];
             const biggestDeadline = rangeCepTotalSystemOrderedByDeadline[rangeCepTotalSystemOrderedByDeadline.length - 1];
             const rangeCepGroupMarket = this.getGroupMarketByRangeCep(cepInitialMarket + "-" + cepFinalMarket);
@@ -100,15 +145,19 @@ class ProcessController {
             if (i == 0) {
                 return;
             }
-            const lastWeightFinal = i != 1 ? Number(this.tableSystem[i - 1][getParamsHeaderSystem().weightFinal]) : 0;
-            const weightFinal = i != 1 ? Number(this.tableSystem[i][getParamsHeaderSystem().weightFinal]) : 0;
+            const lastWeightFinal = i != 1
+                ? Number(this.tableSystem[i - 1][getParamsHeaderSystem().weightFinal])
+                : 0;
+            const weightFinal = i != 1
+                ? Number(this.tableSystem[i][getParamsHeaderSystem().weightFinal])
+                : 0;
             if (isNaN(lastWeightFinal)) {
                 console.log(`Weight ${lastWeightFinal} of range cep ${line[getParamsHeaderSystem().cepInitial]} - ${line[getParamsHeaderSystem().cepFinal]} is not a number`);
                 return;
             }
             const isFirstWeightOfCep = lastWeightFinal > weightFinal;
             if (!isFirstWeightOfCep) {
-                line[getParamsHeaderSystem().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`;
+                line[getParamsHeaderSystem().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.001 : 0)}`;
             }
             else {
                 line[getParamsHeaderSystem().weightInitial] = `0`;
@@ -120,15 +169,19 @@ class ProcessController {
             if (i == 0) {
                 return;
             }
-            const lastWeightFinal = i != 1 ? Number(this.tableMarket[i - 1][getParamsHeaderMarket().weightFinal]) : 0;
-            const weightFinal = i != 1 ? Number(this.tableMarket[i][getParamsHeaderMarket().weightFinal]) : 0;
+            const lastWeightFinal = i != 1
+                ? Number(this.tableMarket[i - 1][getParamsHeaderMarket().weightFinal])
+                : 0;
+            const weightFinal = i != 1
+                ? Number(this.tableMarket[i][getParamsHeaderMarket().weightFinal])
+                : 0;
             if (isNaN(lastWeightFinal)) {
                 console.log(`Weight ${lastWeightFinal} of range cep ${line[getParamsHeaderMarket().cepInitial]} - ${line[getParamsHeaderMarket().cepFinal]} is not a number`);
                 return;
             }
             const isFirstWeightOfCep = lastWeightFinal > weightFinal;
             if (!isFirstWeightOfCep) {
-                line[getParamsHeaderMarket().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.01 : 0)}`;
+                line[getParamsHeaderMarket().weightInitial] = `${lastWeightFinal + (i != 1 ? 0.001 : 0)}`;
             }
             else {
                 line[getParamsHeaderMarket().weightInitial] = `0`;
@@ -149,14 +202,15 @@ class ProcessController {
             const weightFinal = line[getParamsHeaderSystem().weightFinal];
             const deadline = line[getParamsHeaderSystem().deadline];
             const freight = line[getParamsHeaderSystem().freight];
-            if (typeof this.tableSystemGroupByCep[`${cepInitial}-${cepFinal}`] == "undefined") {
+            if (typeof this.tableSystemGroupByCep[`${cepInitial}-${cepFinal}`] ==
+                "undefined") {
                 this.tableSystemGroupByCep[`${cepInitial}-${cepFinal}`] = [];
             }
             this.tableSystemGroupByCep[`${cepInitial}-${cepFinal}`].push({
                 weightInitial,
                 weightFinal,
-                deadline: Number(deadline.replace(/,/g, '.')),
-                freight: Number(freight.replace(/,/g, '.'))
+                deadline: Number(deadline.replace(/,/g, ".")),
+                freight: Number(freight.replace(/,/g, ".")),
             });
         });
     }
@@ -184,20 +238,20 @@ class ProcessController {
         return this.tableSystemGroupByCep[cep];
     }
     getGroupMarketByIndex(index) {
-        return Object.keys(this.tableMarketGroupByCep).map(group => this.tableMarketGroupByCep[group])[index];
+        return Object.keys(this.tableMarketGroupByCep).map((group) => this.tableMarketGroupByCep[group])[index];
     }
     getGroupMarketByRangeCep(cep) {
         return this.tableMarketGroupByCep[cep];
     }
     getCepOfGroupTableSystem() {
-        return Object.keys(this.tableSystemGroupByCep).map(cepInitialFinal => {
-            const [cepInitialSystem, cepFinalSystem] = cepInitialFinal.split('-');
+        return Object.keys(this.tableSystemGroupByCep).map((cepInitialFinal) => {
+            const [cepInitialSystem, cepFinalSystem] = cepInitialFinal.split("-");
             return [cepInitialSystem, cepFinalSystem];
         });
     }
     getCepOfGroupTableMarket() {
-        return Object.keys(this.tableMarketGroupByCep).map(cepInitialFinal => {
-            const [cepInitialSystem, cepFinalSystem] = cepInitialFinal.split('-');
+        return Object.keys(this.tableMarketGroupByCep).map((cepInitialFinal) => {
+            const [cepInitialSystem, cepFinalSystem] = cepInitialFinal.split("-");
             return [cepInitialSystem, cepFinalSystem];
         });
     }
