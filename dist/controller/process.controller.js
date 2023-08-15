@@ -107,11 +107,11 @@ class ProcessController {
     createTableTotalMarket() {
         const cepOfGroupTableMarket = this.getCepOfGroupTableMarket();
         let indexLine = 1;
-        for (let i = 1; i < cepOfGroupTableMarket.length; i++) {
+        for (let i = 0; i < cepOfGroupTableMarket.length; i++) {
             const [cepInitialMarket, cepFinalMarket] = cepOfGroupTableMarket[i];
             const rangeCepTotalSystem = this.tableTotalSystem.filter((line) => line[getParamsHeaderTotalSystem().rangeCep]
                 .split(",")
-                .find((range) => range == `Faixa ${i}`));
+                .find((range) => range == `Faixa ${i + 1}`));
             if (!rangeCepTotalSystem.length) {
                 continue;
             }
