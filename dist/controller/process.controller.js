@@ -95,9 +95,9 @@ class ProcessController {
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().cepInitial] = cepInitialSystem;
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().cepFinal] = cepFinalSystem;
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().deadline] = `${deadline}`;
-                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().freight] = `${freight}`;
-                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightInitial] = `${weightInitialSystem}`;
-                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightFinal] = `${weightFinalSystem}`;
+                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().freight] = `${freight}`.replace(/\./g, ",");
+                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightInitial] = `${weightInitialSystem}`.replace(/\./g, ",");
+                this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().weightFinal] = `${weightFinalSystem}`.replace(/\./g, ",");
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeCep] = ranges.map((range) => `Faixa ${range + 1}`).join(",");
                 this.tableTotalSystem[indexLine][getParamsHeaderTotalSystem().rangeWeight] = indexFinal >= 0 ? `Faixa ${indexFinal + 1}` : "";
                 indexLine++;
@@ -132,9 +132,9 @@ class ProcessController {
                 }
                 this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().cepInitial] = `${cepInitialMarket}`;
                 this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().cepFinal] = `${cepFinalMarket}`;
-                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightFinal] = `${weightFinal}`;
-                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightInitial] = `${weightInitial}`;
-                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().biggestFreight] = `${biggestFreight[getParamsHeaderTotalSystem().freight]}`;
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightFinal] = `${weightFinal}`.replace(/\./g, ",");
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().weightInitial] = `${weightInitial}`.replace(/\./g, ",");
+                this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().biggestFreight] = `${biggestFreight[getParamsHeaderTotalSystem().freight]}`.replace(/\./g, ",");
                 this.tableTotalMarket[indexLine][getParamsHeaderTotalMarket().biggestDeadline] = `${biggestDeadline[getParamsHeaderTotalSystem().deadline]}`;
                 indexLine++;
             });

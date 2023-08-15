@@ -167,13 +167,13 @@ class ProcessController {
           ] = `${deadline}`;
           this.tableTotalSystem[indexLine][
             getParamsHeaderTotalSystem().freight
-          ] = `${freight}`;
+          ] = `${freight}`.replace(/\./g, ",");
           this.tableTotalSystem[indexLine][
             getParamsHeaderTotalSystem().weightInitial
-          ] = `${weightInitialSystem}`;
+          ] = `${weightInitialSystem}`.replace(/\./g, ",");
           this.tableTotalSystem[indexLine][
             getParamsHeaderTotalSystem().weightFinal
-          ] = `${weightFinalSystem}`;
+          ] = `${weightFinalSystem}`.replace(/\./g, ",");
           this.tableTotalSystem[indexLine][
             getParamsHeaderTotalSystem().rangeCep
           ] = ranges.map((range) => `Faixa ${range + 1}`).join(",");
@@ -238,13 +238,16 @@ class ProcessController {
         ] = `${cepFinalMarket}`;
         this.tableTotalMarket[indexLine][
           getParamsHeaderTotalMarket().weightFinal
-        ] = `${weightFinal}`;
+        ] = `${weightFinal}`.replace(/\./g, ",");
         this.tableTotalMarket[indexLine][
           getParamsHeaderTotalMarket().weightInitial
-        ] = `${weightInitial}`;
+        ] = `${weightInitial}`.replace(/\./g, ",");
         this.tableTotalMarket[indexLine][
           getParamsHeaderTotalMarket().biggestFreight
-        ] = `${biggestFreight[getParamsHeaderTotalSystem().freight]}`;
+        ] = `${biggestFreight[getParamsHeaderTotalSystem().freight]}`.replace(
+          /\./g,
+          ","
+        );
         this.tableTotalMarket[indexLine][
           getParamsHeaderTotalMarket().biggestDeadline
         ] = `${biggestDeadline[getParamsHeaderTotalSystem().deadline]}`;
